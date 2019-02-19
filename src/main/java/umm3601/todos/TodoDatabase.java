@@ -40,8 +40,24 @@ public class TodoDatabase {
 
     // Filter status if defined
     if (queryParams.containsKey("status")) {
-      boolean status = true;
-      filteredTodos = filterTodosByStatus(filteredTodos, status);
+      String completedstatus = queryParams.get("status")[0];
+      filteredTodos = filterTodosByStatus(filteredTodos, completedstatus);
+    }
+     if (queryParams.containsKey("contains")) {
+      String completedbody = queryParams.get("contains")[0];
+      filteredTodos = filterTodosByBody(filteredTodos, completedbody);
+    }
+    if (queryParams.containsKey("owner")) {
+      String completedOwner = queryParams.get("owner")[0];
+      filteredTodos = filterTodosByOwner(filteredTodos, completedOwner);
+    }
+    if (queryParams.containsKey("limit")) {
+      int completedLimit = Integer.parseInt(queryParams.get("limit")[0]);
+      filteredTodos = filterTodosByLimit(filteredTodos, completedLimit);
+    }
+    if (queryParams.containsKey("category")) {
+      String completedCategory = queryParams.get("category")[0];
+      filteredTodos = filterTodosByCategory(filteredTodos, completedCategory);
     }
     // Process other query parameters here...
 
@@ -53,10 +69,34 @@ public class TodoDatabase {
    *
    * @param todos     the list of todoss to filter by status
    * @param status the boolean to look for
-   * @return an array of all the todoss from the given list that have
+   * @return an array of all the todos from the given list that have
    * the status
    */
-  public Todo[] filterTodosByStatus(Todo[] todos, boolean status) {
-    return Arrays.stream(todos).filter(x -> x.status == status).toArray(Todo[]::new);
+  public Todo[] filterTodosByStatus(Todo[] todos, String status) {
+    if (status.equals("complete")) {
+      return Arrays.stream(todos).filter(x -> x.status).toArray(Todo[]::new);
+    }
+    else if (status.equals("incomplete")) {
+      return Arrays.stream(todos).filter(x -> !x.status).toArray(Todo[]::new);
+      }
+    else {
+      return todos;
+    }
+  }
+
+  public Todo[] filterTodosByBody(Todo[] todos, String body) {
+      return Arrays.stream(todos).filter(x -> x.body.contains(body)).toArray(Todo[]::new);
+    }
+
+  public Todo[] filterTodosByOwner(Todo[] todos, String Owner) {
+    return Arrays.stream(todos).filter(x -> x.owner.contains(Owner)).toArray(Todo[]::new);
+  }
+
+  public Todo[] filterTodosByLimit(Todo[] todos, int Limit) {
+    return Arrays.stream(todos).limit(Limit).toArray(Todo[]::new);
+  }
+
+  public Todo[] filterTodosByCategory(Todo[] todos, String Category) {
+    return Arrays.stream(todos).filter(x -> x.category.contains(Category)).toArray(Todo[]::new);
   }
 }

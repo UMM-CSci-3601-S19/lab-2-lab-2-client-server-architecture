@@ -23,6 +23,42 @@ function getAllTodosByStatus() {
   });
 }
 
+function getAllTodosByBody() {
+  console.log("Getting all the todos.");
+
+  var HttpThingy = new HttpClient();
+  HttpThingy.get("/api/todos?contains=" + document.getElementById("body").value, function (returned_json) {
+    document.getElementById('jsonDump').innerHTML = returned_json;
+  });
+}
+
+function getAllTodosByOwner() {
+  console.log("Getting all the todos.");
+
+  var HttpThingy = new HttpClient();
+  HttpThingy.get("/api/todos?owner=" + document.getElementById("owner").value, function (returned_json) {
+    document.getElementById('jsonDump').innerHTML = returned_json;
+  });
+}
+
+function getAllTodosByLimit() {
+  console.log("Getting all the todos.");
+
+  var HttpThingy = new HttpClient();
+  HttpThingy.get("/api/todos?limit=" + document.getElementById("limit").value, function (returned_json) {
+    document.getElementById('jsonDump').innerHTML = returned_json;
+  });
+}
+
+function getAllTodosByCategory() {
+  console.log("Getting all the todos.");
+
+  var HttpThingy = new HttpClient();
+  HttpThingy.get("/api/todos?category=" + document.getElementById("category").value, function (returned_json) {
+    document.getElementById('jsonDump').innerHTML = returned_json;
+  });
+}
+
 /**
  * Wrapper to make generating http requests easier. Should maybe be moved
  * somewhere else in the future!.

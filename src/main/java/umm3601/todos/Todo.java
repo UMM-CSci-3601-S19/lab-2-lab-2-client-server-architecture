@@ -2,7 +2,7 @@ package umm3601.todos;
 
 public class Todo {
   String _id;
-  String name;
+  String owner;
   boolean status;
   String body;
   String category;
