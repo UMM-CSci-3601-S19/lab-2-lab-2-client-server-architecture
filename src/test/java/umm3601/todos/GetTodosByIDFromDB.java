@@ -8,7 +8,7 @@ import java.io.IOException;
 
 import static junit.framework.TestCase.assertEquals;
 
-public class GetTodoByIDFromDB {
+public class GetTodosByIDFromDB {
 
   @Test
   public void getFry() throws IOException {

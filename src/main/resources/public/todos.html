@@ -28,6 +28,9 @@
 <label for="category">Category :</label><input id="category" type="text" name="category">
 <button type="button" id="getTodosByCategory"> get todos by category</button>
 
+<label for="orderBy">Order By :</label><input id="orderBy" type="text" name="orderBy">
+<button type="button" id="getTodosByOrder"> get todos in order</button>
+
 <script>
   window.onload = function () {
     console.log("The page is loaded now!");
@@ -49,6 +52,9 @@
 
     element = document.getElementById('getTodosByCategory');
     element.addEventListener("click", getAllTodosByCategory, true);
+
+    element = document.getElementById('getTodosByOrder');
+    element.addEventListener("click", getAllTodosByOrder, true);
   }
 </script>
 </body>

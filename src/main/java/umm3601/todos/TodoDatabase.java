@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class TodoDatabase {
 
@@ -40,12 +41,12 @@ public class TodoDatabase {
 
     // Filter status if defined
     if (queryParams.containsKey("status")) {
-      String completedstatus = queryParams.get("status")[0];
-      filteredTodos = filterTodosByStatus(filteredTodos, completedstatus);
+      String completedStatus = queryParams.get("status")[0];
+      filteredTodos = filterTodosByStatus(filteredTodos, completedStatus);
     }
      if (queryParams.containsKey("contains")) {
-      String completedbody = queryParams.get("contains")[0];
-      filteredTodos = filterTodosByBody(filteredTodos, completedbody);
+      String completedBody = queryParams.get("contains")[0];
+      filteredTodos = filterTodosByBody(filteredTodos, completedBody);
     }
     if (queryParams.containsKey("owner")) {
       String completedOwner = queryParams.get("owner")[0];
@@ -58,6 +59,10 @@ public class TodoDatabase {
     if (queryParams.containsKey("category")) {
       String completedCategory = queryParams.get("category")[0];
       filteredTodos = filterTodosByCategory(filteredTodos, completedCategory);
+    }
+    if (queryParams.containsKey("orderBy")) {
+      String completedOrder = queryParams.get("orderBy")[0];
+      filteredTodos = sortTodosByOrder(filteredTodos, completedOrder);
     }
     // Process other query parameters here...
 
@@ -96,7 +101,37 @@ public class TodoDatabase {
     return Arrays.stream(todos).limit(Limit).toArray(Todo[]::new);
   }
 
-  public Todo[] filterTodosByCategory(Todo[] todos, String Category) {
-    return Arrays.stream(todos).filter(x -> x.category.contains(Category)).toArray(Todo[]::new);
+  public Todo[] filterTodosByCategory(Todo[] todos, String category) {
+    return Arrays.stream(todos).filter(x -> x.category.contains(category)).toArray(Todo[]::new);
+  }
+
+//  public Todo[] sortTodosByOrder(Todo[] todos, String attribute) {
+//    if (attribute.equals("status")) {
+//      return Arrays.stream(todos).sorted((o1, o2)->o1.sort().getValue(). compareTo(o2.getItem().getValue())). collect(Collectors.toList());
+//    }
+//    if (attribute.equals("owner")) {
+//      return Arrays.stream(todos).filter(x -> x.owner.contains(allTodos)).toArray(Todo[]::new);
+//    }
+//    if (attribute.equals("body")) {
+//      return Arrays.stream(todos).filter(x -> x.category.contains(Category)).toArray(Todo[]::new);
+//    }
+//  }
+
+  public Todo[] sortTodosByOrder(Todo[] todos, String orderBy) {
+      Todo[] array = Arrays.stream(todos).sorted((o1, o2) -> {
+      if (orderBy.equals("owner")) {
+        return o1.owner.compareTo(o2.owner);
+      } else if (orderBy.equals("category")) {
+        return o1.category.compareTo(o2.category);
+      } else if (orderBy.equals("status")) {
+        return Boolean.compare(o1.status, o2.status);
+      } else if (orderBy.equals("body")) {
+        return o1.body.compareTo(o2.body);
+      }
+      else {
+        return 0;
+      }
+    }).toArray(Todo[]::new);
+      return array;
   }
 }
